@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 // internal imports
-const { Product } = require('../models/productModel');
+const Product = require('../models/productModel');
 
 const getProducts = async (req, res, next) => {
   try {

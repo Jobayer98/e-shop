@@ -5,7 +5,7 @@ const {
   insertManyProduct,
   updateProduct,
   deleteProduct,
-} = require('../controllers/productController');
+} = require('../../controllers/productController');
 
 const router = require('express').Router();
 
