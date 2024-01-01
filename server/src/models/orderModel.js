@@ -35,11 +35,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
       enum: ['Paid', 'Unpaid'],
     },
-    paymentMethod: {
-      type: String,
-      required: true,
-      enum: ['COD', 'Card', 'Bkash', 'SSLCommerz'],
-    },
+
     billingAddress: {
       type: Object,
       required: true,
