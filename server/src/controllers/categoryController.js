@@ -105,9 +105,9 @@ const getAllSubCategory = async (req, res, next) => {
 
 const getSubCategory = async (req, res, next) => {
   try {
-    const result = await SubCategory.find({ _id: req.params.id }).populate(
-      'products'
-    );
+    const result = await SubCategory.find({ _id: req.params.id })
+      .populate('products')
+      .populate('offer');
 
     if (!result) {
       return res

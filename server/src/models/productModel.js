@@ -21,7 +21,7 @@ categorySchema.virtual('products', {
   foreignField: 'category',
 });
 
-exports.Category = mongoose.model('Category', categorySchema);
+const Category = mongoose.model('Category', categorySchema);
 
 const subCategorySchema = new mongoose.Schema({
   name: {
@@ -33,6 +33,10 @@ const subCategorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
+  },
+  offer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Offer',
   },
 });
 
@@ -49,7 +53,7 @@ subCategorySchema.virtual('products', {
   foreignField: 'subCategory',
 });
 
-exports.SubCategory = mongoose.model('SubCategory', subCategorySchema);
+const SubCategory = mongoose.model('SubCategory', subCategorySchema);
 
 const productSchema = new mongoose.Schema(
   {
@@ -132,10 +136,20 @@ const productSchema = new mongoose.Schema(
       ref: 'SubCategory',
       required: true,
     },
+    offer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Offer',
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
+
+module.exports = {
+  Category,
+  SubCategory,
+  Product,
+};

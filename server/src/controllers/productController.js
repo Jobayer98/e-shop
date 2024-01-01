@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 // internal imports
-const Product = require('../models/productModel');
+const { Product } = require('../models/productModel');
 
 const getProducts = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ const getProducts = async (req, res, next) => {
 // get a single product
 const getProduct = async (req, res, next) => {
   try {
-    const result = await Product.findById(req.params.id);
+    const result = await Product.findById(req.params.id).populate('offer');
 
     if (!result) {
       return res
