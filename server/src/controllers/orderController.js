@@ -83,4 +83,62 @@ const deleteOrder = async (req, res, next) => {
   }
 };
 
-module.exports = { placeOrder, getOrder, getOrders, updateOrder, deleteOrder };
+const showAllOrderInfo = async () => {
+  try {
+    const totalOrder = await Order.countDocuments();
+    const totalProcessing = await Order.countDocuments({
+      orderStatus: 'processing',
+    });
+    const totalProcessed = await Order.countDocuments({
+      orderStatus: 'processed',
+    });
+    const totalShipped = await Order.countDocuments({ orderStatus: 'shipped' });
+    const totalDelivered = await Order.countDocuments({
+      orderStatus: 'delivered',
+    });
+    const totalCancelled = await Order.countDocuments({
+      orderStatus: 'cancelled',
+    });
+
+    const totalVariantProductSale = await Order.aggregate([
+      {
+        $unwind: '$orderItems',
+      },
+      {
+        $unwind: '$orderItems.variants',
+      },
+      {
+        $group: {
+          _id: {
+            product: '$orderItems.product',
+            // variant: '$orderItems.variants',
+          },
+          totalQuantity: { $sum: '$orderItems.variants.quantity' },
+        },
+      },
+    ]);
+
+    const orderInfo = {
+      totalOrder,
+      totalProcessing,
+      totalProcessed,
+      totalShipped,
+      totalDelivered,
+      totalCancelled,
+    };
+    const { totalQuantity } = totalVariantProductSale[0];
+
+    return { orderInfo, totalProductSale: totalQuantity };
+  } catch (error) {
+    return error;
+  }
+};
+
+module.exports = {
+  placeOrder,
+  getOrder,
+  getOrders,
+  updateOrder,
+  deleteOrder,
+  showAllOrderInfo,
+};
